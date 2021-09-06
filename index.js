@@ -57,7 +57,15 @@ app.init = async () => {
     [rows] = await connection.execute(sql);
     console.log(`Brangiausias grybas yra: ${upperCaseName(rows[0].mushroom)}.`);
 
+    //** 4. ** _Isspausdinti, pigiausio grybo pavadinima_
 
+    sql = 'SELECT `mushroom` \
+            FROM `mushroom` \
+            WHERE `price` = (\
+                SELECT MIN(`price`) FROM `mushroom`\
+                )';
+    [rows] = await connection.execute(sql);
+    console.log(`Pigiausias grybas yra: ${upperCaseName(rows[0].mushroom)}.`);
 
 }
 
