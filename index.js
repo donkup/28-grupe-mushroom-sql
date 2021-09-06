@@ -47,6 +47,18 @@ app.init = async () => {
     console.log(`Grybautojai: ${gatherers.join(', ')}.`);
 
 
+    //**3.** _Isspausdinti, brangiausio grybo pavadinima_
+
+    sql = 'SELECT `mushroom` \
+            FROM `mushroom` \
+            WHERE `price` = (\
+                SELECT MAX(`price`) FROM `mushroom`\
+                )';
+    [rows] = await connection.execute(sql);
+    console.log(`Brangiausias grybas yra: ${upperCaseName(rows[0].mushroom)}.`);
+
+
+
 }
 
 app.init();
