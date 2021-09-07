@@ -44,6 +44,7 @@ app.init = async () => {
     [rows] = await connection.execute(sql);
     const gatherers = rows.map(obj => obj.name);
 
+    console.log('-------------------------');
     console.log(`Grybautojai: ${gatherers.join(', ')}.`);
 
 
@@ -55,6 +56,7 @@ app.init = async () => {
                 SELECT MAX(`price`) FROM `mushroom`\
                 )';
     [rows] = await connection.execute(sql);
+    console.log('-------------------------');
     console.log(`Brangiausias grybas yra: ${upperCaseName(rows[0].mushroom)}.`);
 
     //** 4. ** _Isspausdinti, pigiausio grybo pavadinima_
@@ -65,9 +67,38 @@ app.init = async () => {
                 SELECT MIN(`price`) FROM `mushroom`\
                 )';
     [rows] = await connection.execute(sql);
+    console.log('-------------------------');
     console.log(`Pigiausias grybas yra: ${upperCaseName(rows[0].mushroom)}.`);
 
+
+    // 5
+    sql = 'SELECT `mushroom`, (1000 / `weight`) as amount \
+            FROM `mushroom` ORDER BY `mushroom` ASC';
+    [rows] = await connection.execute(sql);
+
+    console.log('Grybai:');
+    i = 0;
+    for (const item of rows) {
+        console.log(`${++i}) ${upperCaseName(item.mushroom)} - ${(+item.amount).toFixed(1)}`);
+    }
+
+    console.log('');
+    // 6
+    sql = 'SELECT `name`, SUM(`count`) as amount \
+            FROM `basket` \
+            LEFT JOIN `gatherer` \
+                ON `gatherer`.`id` = `basket`.`gatherer_id` \
+            GROUP BY `basket`.`gatherer_id` \
+            ORDER BY `name`';
+    [rows] = await connection.execute(sql);
+
+    console.log('Grybu kiekis pas grybautoja:');
+    i = 0;
+    for (const item of rows) {
+        console.log(`${++i}) ${upperCaseName(item.name)} - ${item.amount} grybu`);
+    }
 }
+
 
 app.init();
 
