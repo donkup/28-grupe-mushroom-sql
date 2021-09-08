@@ -145,9 +145,9 @@ app.init = async () => {
         console.log(rows);
 
     }
-    const languageLt = mushroomByRating('en');
-    const languageEn = mushroomByRating('lt');
-    const language = mushroomByRating();
+    mushroomByRating('en');
+    mushroomByRating('lt');
+    mushroomByRating();
 
 }
 
