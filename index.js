@@ -117,6 +117,38 @@ app.init = async () => {
         console.log(`${++i}) ${upperCaseName(item.name)} - ${+item.amount} EUR`);
     }
 
+    //**8** _Isspausdinti, kiek nuo geriausiai vertinamu iki blogiausiai 
+    //vertinamu grybu yra surinkta. Spausdinima turi atlikti funkcija 
+    //(pavadinimu `mushroomsByRating()`), kuri gauna vieninteli parametra - kalbos pavadinima, 
+    //pagal kuria reikia sugeneruoti rezultata_
+    // sql = 'SELECT  `ratings`.`id`, `name_en`, SUM(`count`) as amount\
+    // FROM `ratings` \
+    // LEFT JOIN `mushroom` \
+    // ON `mushroom`.`rating` = `ratings`.`id` \
+    // LEFT JOIN `basket` \
+    // ON `basket`.`mushroom_id` = `mushroom`.`id` \
+    // GROUP BY `ratings`.`id`\
+    // ORDER BY `ratings`.`id` DESC';
+    // [rows] = await connection.execute(sql);
+    // console.log(rows);
+
+    async function mushroomByRating(lang = 'lt') {
+        sql = 'SELECT  `ratings`.`id`, `name_' + lang + '`, SUM(`count`) as amount\
+    FROM `ratings` \
+    LEFT JOIN `mushroom` \
+    ON `mushroom`.`rating` = `ratings`.`id` \
+    LEFT JOIN `basket` \
+    ON `basket`.`mushroom_id` = `mushroom`.`id` \
+    GROUP BY `ratings`.`id`\
+    ORDER BY `ratings`.`id` DESC';
+        [rows] = await connection.execute(sql);
+        console.log(rows);
+
+    }
+    const languageLt = mushroomByRating('en');
+    const languageEn = mushroomByRating('lt');
+    const language = mushroomByRating();
+
 }
 
 
