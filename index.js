@@ -97,6 +97,26 @@ app.init = async () => {
     for (const item of rows) {
         console.log(`${++i}) ${upperCaseName(item.name)} - ${item.amount} grybu`);
     }
+
+    // 7
+    sql = 'SELECT `name`, SUM(`count`*`price`*`weight`/1000) as amount \
+            FROM `basket` \
+            LEFT JOIN `gatherer` \
+                ON `gatherer`.`id` = `basket`.`gatherer_id` \
+            LEFT JOIN `mushroom`\
+                ON `mushroom`.`id` = `basket`.`mushroom_id` \
+            GROUP BY `basket`.`gatherer_id` \
+            ORDER BY `amount` DESC ';
+
+    [rows] = await connection.execute(sql);
+    console.log(rows);
+
+    console.log('Grybu krepselio kainos pas grybautoja:');
+    i = 0;
+    for (const item of rows) {
+        console.log(`${++i}) ${upperCaseName(item.name)} - ${+item.amount} EUR`);
+    }
+
 }
 
 
