@@ -82,7 +82,6 @@ app.init = async () => {
         console.log(`${++i}) ${upperCaseName(item.mushroom)} - ${(+item.amount).toFixed(1)}`);
     }
 
-    console.log('');
     // 6
     sql = 'SELECT `name`, SUM(`count`) as amount \
             FROM `basket` \
@@ -92,6 +91,7 @@ app.init = async () => {
             ORDER BY `name`';
     [rows] = await connection.execute(sql);
 
+    console.log('-------------------------');
     console.log('Grybu kiekis pas grybautoja:');
     i = 0;
     for (const item of rows) {
@@ -109,8 +109,8 @@ app.init = async () => {
             ORDER BY `amount` DESC ';
 
     [rows] = await connection.execute(sql);
-    console.log(rows);
 
+    console.log('-------------------------');
     console.log('Grybu krepselio kainos pas grybautoja:');
     i = 0;
     for (const item of rows) {
