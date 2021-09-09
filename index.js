@@ -168,9 +168,28 @@ app.init = async () => {
     for (let { name, rating } of rows) {
         mushroomList.push(upperCaseName(name))
     }
+    console.log('-------------------------');
+    console.log(`Grybai: ${mushroomList.join(', ')}.`);
+    console.log('-------------------------');
+
+    // ** 10 ** _Isspausdinti, visus grybus, kuriu ivertinimas yra viena 
+    //is nurodytu reiksmiu: 1, 3 arba 5 zvaigzdutem, isrikiuotus gerejimo tvarka_
+
+
+    sql = 'SELECT `mushroom` as name, `rating`\
+    FROM `mushroom`\
+    WHERE rating IN (1,3,5) \
+    ORDER BY `rating` ASC' ;
+
+    [rows] = await connection.execute(sql);
+    console.log(rows);
+    mushroomList = [];
+
+    for (let { name, rating } of rows) {
+        mushroomList.push(upperCaseName(name))
+    }
     console.log('');
     console.log(`Grybai: ${mushroomList.join(', ')}.`);
-    // console.log(rows);
 }
 
 
