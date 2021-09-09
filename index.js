@@ -145,10 +145,32 @@ app.init = async () => {
         console.log(rows);
 
     }
-    mushroomByRating('en');
-    mushroomByRating('lt');
-    mushroomByRating();
+    console.log('-------------------------');
+    await mushroomByRating('en');
+    console.log('-------------------------');
+    await mushroomByRating('lt');
+    console.log('-------------------------');
+    await mushroomByRating();
 
+
+    //** 9 ** _Isspausdinti, visus grybus, kuriu ivertinimas geresnis arba lygus 4 zvaigzdutem, isrikiuotus gerejimo tvarka_
+    //pvz.: Grybai: Grybas, Grybas, Grybas.
+
+    sql = 'SELECT `mushroom` as name, `rating`\
+    FROM `mushroom`\
+    WHERE `rating` >= 4\
+    ORDER BY `rating` ASC' ;
+
+    [rows] = await connection.execute(sql);
+
+    let mushroomList = [];
+
+    for (let { name, rating } of rows) {
+        mushroomList.push(upperCaseName(name))
+    }
+    console.log('');
+    console.log(`Grybai: ${mushroomList.join(', ')}.`);
+    // console.log(rows);
 }
 
 
